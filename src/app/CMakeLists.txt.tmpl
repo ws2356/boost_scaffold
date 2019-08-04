@@ -1,0 +1,8 @@
+add_executable(main main.cc)
+# remove if no need
+target_link_libraries(main
+  Boost::coroutine
+  Boost::filesystem
+  Boost::system
+  Boost::program_options
+)

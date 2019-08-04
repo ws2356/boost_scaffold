@@ -1,0 +1,27 @@
+cmake_minimum_required(VERSION 3.14.0)
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install_prefix" CACHE STRING "")
+
+project(project_name)
+enable_testing()
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS
+  "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wpedantic -Wno-unused-parameter")
+
+set(BOOST_CMAKE_PATH
+  "${CMAKE_SOURCE_DIR}/src/third/boost-cmake"
+  CACHE
+  STRING
+  "boost-cmake 工程目录")
+
+add_definitions(-DBOOST_COROUTINES_NO_DEPRECATION_WARNING)
+
+# 通过boost-cmake编译boost
+add_subdirectory(${BOOST_CMAKE_PATH} ${CMAKE_BINARY_DIR}/boost)
+include_directories(${BOOST_SOURCE})
+
+add_subdirectory(src/lib)
+add_subdirectory(src/app)
+add_subdirectory(src/test)
+
+add_test(NAME my_unittest COMMAND error_test)

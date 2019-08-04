@@ -1,0 +1,7 @@
+*.swp
+*.temp
+*.log
+.tags
+/build/
+compile_commands.json
+/build-for-vim/

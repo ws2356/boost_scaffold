@@ -1,0 +1,8 @@
+add_library(logging logging.cc logging.h)
+
+target_link_libraries(logging
+  spdlog::spdlog
+)
+
+# TODO: may be let use do this?
+target_include_parent(logging ${CMAKE_CURRENT_SOURCE_DIR})

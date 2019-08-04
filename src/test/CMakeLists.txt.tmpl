@@ -1,0 +1,6 @@
+add_executable(error_test error_test.cc)
+
+target_link_libraries(error_test
+  Boost::unit_test_framework
+  error
+)

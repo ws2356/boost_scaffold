@@ -1,0 +1,38 @@
+#ifndef ERROR_H
+#define ERROR_H 1
+
+#include <boost/system/error_code.hpp>
+
+namespace project_name {
+  enum class project_name_errc {
+    unknown = 1
+  };
+
+  typedef boost::system::error_code error_code;
+  typedef boost::system::error_condition error_condition;
+
+  class project_name_error_cat: public boost::system::error_category {
+  public:
+    static project_name_error_cat& shared();
+
+    virtual const char * name() const noexcept;
+    virtual std::string message(int ev) const;
+    /* default imp is enough
+    virtual bool equivalent(const error_code &ec,
+        int condition) const noexcept; */
+  };
+
+  project_name::error_condition make_error_condition(project_name::project_name_errc e);
+  project_name::error_code make_error_code(project_name::project_name_errc e);
+}
+
+template<>
+struct boost::system::is_error_condition_enum<project_name::project_name_errc> {
+  static const bool value = true;
+};
+
+/* template<> */
+/* struct boost::system::is_error_code_enum<project_name::project_name_errc> { */
+/*   static const bool value = true; */
+/* }; */
+#endif /* ifndef ERROR_H */

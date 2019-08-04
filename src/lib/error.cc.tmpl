@@ -1,0 +1,34 @@
+#include <error.h>
+
+namespace project_name {
+  const char * project_name_error_cat::name() const noexcept {
+    return "project_name";
+  }
+
+  std::string project_name_error_cat::message(int ev) const {
+    auto ev_enum = static_cast<project_name_errc>(ev);
+    switch (ev_enum) {
+      case project_name_errc::unknown:
+        return "Unknown error";
+    }
+  }
+
+  project_name_error_cat& project_name_error_cat::shared() {
+    static project_name_error_cat instance;
+    return instance;
+  }
+
+  project_name::error_condition make_error_condition(project_name::project_name_errc e) {
+    return error_condition(
+        static_cast<int>(e),
+        project_name_error_cat::shared()
+        );
+  }
+
+  project_name::error_code make_error_code(project_name::project_name_errc e) {
+    return error_code(
+        static_cast<int>(e),
+        project_name_error_cat::shared()
+        );
+  }
+}

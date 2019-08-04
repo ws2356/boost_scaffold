@@ -1,0 +1,6 @@
+[submodule "src/third/boost-cmake"]
+	path = src/third/boost-cmake
+	url = https://github.com/Orphis/boost-cmake.git
+[submodule "src/lib/third/spdlog"]
+	path = src/lib/third/spdlog
+	url = https://github.com/gabime/spdlog

@@ -1,0 +1,17 @@
+function(target_include_parent target_name path)
+  get_filename_component(parent_path ${path} DIRECTORY)
+  target_include_directories(
+    ${target_name}
+    INTERFACE
+    ${parent_path})
+  unset(parent_path)
+endfunction()
+
+add_subdirectory(third/spdlog)
+add_subdirectory(logging)
+
+add_library(error error.cc error.h)
+target_link_libraries(error
+  Boost::system
+)
+target_include_directories(error PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
