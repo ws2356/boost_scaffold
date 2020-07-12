@@ -1,6 +1,33 @@
 #!/usr/bin/env bash
 set -eu
 
+show_help() {
+  printf "Usage:\n\
+  %s --project-name <project_name>\n" "$0"
+}
+
+project_name=
+is_inplace=false
+while [ "$#" -gt 0 ] ; do
+  key="$1"
+  case $key in
+    -n|--project-name)
+      project_name="$2"
+      shift ; shift
+      ;;
+    -i|--inplace)
+      is_inplace=true
+      shift
+      ;;
+  esac
+done
+
+if [ -z "$project_name" ] ; then
+  show_help
+  exit 1
+fi
+
+
 this_file="$(type -P "${BASH_SOURCE[0]}")"
 if ! [ -e "$this_file" ] ; then
   echo "Failed to resolve file."
@@ -35,27 +62,10 @@ list_of_files+=("${src_dir}/src/lib/logging/logging.h.tmpl")
 list_of_files+=("${src_dir}/src/test/CmakeLists.txt.tmpl")
 list_of_files+=("${src_dir}/src/test/error_tests.cc.tmpl")
 
-project_name=
-while [ "$#" -gt 0 ] ; do
-  key="$1"
-  case $key in
-      --project-name)
-      project_name="$2"
-      shift ; shift
-      ;;
-  esac
-done
-
-show_help() {
-  printf "Usage:\n\
-  %s --project-name <project_name>\n" "$0"
-}
-
-if [ -z "$project_name" ] ; then
-  show_help
-  exit 1
+declare -a optional_sed_args=()
+if $is_inplace ; then
+  optional_sed_args+=("-i.bak")
 fi
-
 generate_file() {
   local tmpl_file="$1"
   local tmpl_dir=
@@ -64,8 +74,13 @@ generate_file() {
   tmpl_dir="$(dirname "$tmpl_file")"
   tmpl_name="$(basename "$tmpl_file" ".tmpl")"
   generated_file="${tmpl_dir}/${tmpl_name}"
-  >"$generated_file" sed -E $'s/\x1eproject_name\x1e/'"${project_name}/" "$tmpl_file"
-  rm "$tmpl_file"
+  if $is_inplace ; then
+    generated_file='/dev/null'
+  fi
+  >"$generated_file" sed "${optional_sed_args[@]}" -E $'s/\x1eproject_name\x1e/'"${project_name}/g" "$tmpl_file"
+  if ! $is_inplace ; then
+    rm "$tmpl_file"
+  fi
 }
 
 for ff in "${list_of_files[@]}" ; do
