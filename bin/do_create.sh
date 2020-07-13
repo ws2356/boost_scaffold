@@ -117,8 +117,8 @@ git commit -m 'add source'
 
 # init git repo
 git reset 82c6964
-git checkout 94ac0e5 -- src/third/boost-cmake
-git checkout 94ac0e5 -- src/lib/third/spdlog
+git checkout 5fa9db0 -- src/third/boost-cmake
+git checkout 5fa9db0 -- src/lib/third/spdlog
 
 git_add_file
 git add bin/*.sh src/third/boost-cmake src/lib/third/spdlog
