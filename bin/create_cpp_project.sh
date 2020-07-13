@@ -16,11 +16,14 @@ if [ -z "$project_name" ] ; then
   exit 1
 fi
 
-echo "project_name: $project_name"
+if [ -e "$project_name" ] ; then
+  echo "project: $project_name already exists!"
+  exit 1
+fi
 
 tmpl_repo='https://github.com/ws2356/boost_scaffold.git'
 tmp_path="$(mktemp -d '/tmp/boost_scaffold.XXXXXX')"
 git clone "$tmpl_repo" "$tmp_path"
-(cd "$tmp_path" && bin/do_create.sh)
+(cd "$tmp_path" && bin/do_create.sh "$@")
 
-mv "$tmp_path" .
+mv "$tmp_path" "$project_name"
