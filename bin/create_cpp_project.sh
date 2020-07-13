@@ -122,4 +122,5 @@ git checkout 94ac0e5 -- src/lib/third/spdlog
 
 git_add_file
 git add bin/*.sh src/third/boost-cmake src/lib/third/spdlog
-git commit -m 'Init'
+git add -u
+git commit --amend -m 'Init'
