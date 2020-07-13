@@ -124,3 +124,4 @@ git_add_file
 git add bin/*.sh src/third/boost-cmake src/lib/third/spdlog
 git add -u
 git commit --amend -m 'Init'
+git remote remove origin
