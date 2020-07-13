@@ -62,9 +62,9 @@ list_of_files+=("${src_dir}/src/lib/logging/logging.h.tmpl")
 list_of_files+=("${src_dir}/src/test/CmakeLists.txt.tmpl")
 list_of_files+=("${src_dir}/src/test/error_tests.cc.tmpl")
 
-declare -a optional_sed_args=()
+declare -a sed_args=("-E")
 if $is_inplace ; then
-  optional_sed_args+=("-i.bak")
+  sed_args+=("-i.bak")
 fi
 generate_file() {
   local tmpl_file="$1"
@@ -77,7 +77,7 @@ generate_file() {
   if $is_inplace ; then
     generated_file='/dev/null'
   fi
-  >"$generated_file" sed "${optional_sed_args[@]}" -E $'s/\x1eproject_name\x1e/'"${project_name}/g" "$tmpl_file"
+  >"$generated_file" sed "${sed_args[@]}" $'s/\x1eproject_name\x1e/'"${project_name}/g" "$tmpl_file"
   if ! $is_inplace ; then
     rm "$tmpl_file"
   fi
